@@ -1,0 +1,88 @@
+import java.util.ArrayList;
+import java.util.Random;
+
+/**
+ * The class that actually does the sorting. Steps through the list one 
+ * element at a time and inserts it into another list 
+ * 
+ * @author Keenan Sanford
+ * @version 1/25/2015
+ */
+public class InsertionSort {
+	
+	/**
+	 * Constructor.
+	 */
+	public InsertionSort() {
+	}
+	
+	/**
+	 * @author Keenan Sanford
+	 * @version 1/25/2015
+	 * 
+	 * Purpose: The method that sorts the list.
+	 * 
+	 * Precondition: An non-zero sized ArrayList of Comparable elements in no specific order.
+	 * 
+	 * Postcondition: The same ArrayList of Comparable elements A[a_1, a_2, ..., a_n] such that a_1 <= a_2 <= ... <= a_n.
+	 * 
+	 * Invariant: A newly sorted number (key) is added to sortedArray for each step i. The while loop steps through sortedArray and
+	 * finds the correct index at which to add key to sortedArray. Once the size of sortedArray reaches the size of the unsortedArray
+	 * input, the program ends.
+	 * 
+	 * @param arrayToBeSorted The ArrayList in need of sorting.
+	 * @return The newly sorted ArrayList.
+	 */
+	public ArrayList<Comparable> sort(ArrayList<Comparable> unsortedArray) {
+		// Ensures that it is not trying to sort an empty array and returns null if it is.
+		if ( unsortedArray.size() == 0 ) {
+			return null;
+		}
+		
+		ArrayList<Comparable> sortedArray = new ArrayList<Comparable>();	// Holds newly sorted elements from arrayToBeSorted.
+		sortedArray.add(0, unsortedArray.get(0));							// Primes the sortedArray list for sorting.
+		
+		// Steps through the arrayToBeSorted linearly and sorts each object into sortedArray.
+		for (int i = 1; i < unsortedArray.size(); i++) {
+			int key = (Integer)unsortedArray.get(i);
+			int j = i;
+			
+			// Steps (backwards) through sortedArray and compares the integer that needs
+			// to be sorted into the array with the integer at index j. Moves each sorted 
+			// integer that is greater than the key one space over to create room for the key.
+			while (j > 0 && key <= (Integer)sortedArray.get(j-1)) {
+				j = j-1;
+			}
+			
+			// Inserts the key into the sortedArray list in the proper position.
+			sortedArray.add(j, key);
+		}
+		
+		return sortedArray;
+	}
+	
+	public int sortTime( int size ) {
+		// Fills an ArrayList with SIZE randomly created integers.
+		Random generator = new Random();
+		ArrayList<Comparable> randomArray = new ArrayList<Comparable>();
+		for ( int i = 0; i < size; i++ ) {
+			int randomNumb = generator.nextInt(InsertionTesterMain.ELEMENT_SIZE);
+			randomArray.add(randomNumb);
+		}
+		
+		// Gets the time before the sort.
+		int beginTime = (int)System.currentTimeMillis();
+		
+		// Sorts randomArray.
+		this.sort(randomArray);
+		
+		// Gets the time after the sort.
+		int endTime = (int)System.currentTimeMillis();
+		
+		// Calculates the time it took to sort randomArray.
+		int sortTime = endTime - beginTime;
+		
+		return sortTime;
+	}
+	
+}
