@@ -22,7 +22,7 @@ public class MergeTesterMain {
 	
 	public static void main(String[] args) {
 		
-		ArrayList<Integer> avgTimes = new ArrayList<Integer>(); 				// Holds the averages of each run of InsertionSort.
+		ArrayList<Integer> avgTimes = new ArrayList<Integer>(); 				// Holds the averages of each run of MergeSort.
 		ArrayList<Comparable> emptyArray = new ArrayList<Comparable>();			// Empty array for CorrectnessTester.
 		
 		// Constructs and sorts an ArrayList for CorrectnessTester
