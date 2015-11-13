@@ -4,7 +4,10 @@ A sorting exercise using insertion, merge, and heap sorting functions to compare
 
 This assignment was mediated by the professor of the class (Dr. Gerry Howser) who aided with the coding at varying points. 
 
+
 The classes are described in detail below
+
+CorrectnessTest: an algorithm that checks to make sure a list is sorted, numerically speaking.
 
 HeapSort: a recursive, sorting funtion that treats an arraylist as a binary tree and sorts it in reverse order from the middle of the list to the top. The idea is that for any given node n that is less than half the size of the arraylist there are two children nodes 2n and 2n+1 that are uniquely the children of n. As the sort gets closer to the root, the recursive function is called increasingly more as the children nodes have children nodes and so on and so forth. Eventually, one last recursion goes through the entire arraylist and the it emerges on the other side completely ordered.
 
