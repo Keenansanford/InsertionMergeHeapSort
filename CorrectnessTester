@@ -1,0 +1,50 @@
+import java.util.ArrayList;
+import java.util.Random;
+
+/**
+ * Contains methods that test the correctness of the InsertionSort class.
+ * 
+ * @author Keenan Sanford
+ * @version 1/28/2015
+ */
+public class CorrectnessTester {
+	
+	/**
+	 * Constructor
+	 * 
+	 */
+	public CorrectnessTester() {
+	}
+	
+	/**
+	 * Tests to make sure the sorter returns correctly when given an empty list.
+	 * 
+	 */
+	public boolean zeroElementArraySort( ArrayList<Comparable> sortedArray ) {
+	
+		// The sorter is supposed to return null upon sorting an empty ArrayList, so this checks and returns true if it does. 
+		if ( sortedArray == null ) {
+			return true;
+		}
+		
+		// Otherwise, if the sorter doesn't return null, returns false.
+		return false;
+	}
+	
+	/**
+	 * Tests the InsertionSort, HeapSort, and MergeSort classes to ensure it has correctly sorted the values.
+	 * 
+	 */
+	public boolean correctlySorted( ArrayList<Comparable> sortedArray ) {
+
+		// Loops through the elements in sortedArray and ensures they are sorted.
+		for ( int i = 1; i < sortedArray.size(); i++ ) {
+			if ( (Integer)sortedArray.get(i-1) > (Integer)sortedArray.get(i) ) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+}
