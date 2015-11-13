@@ -1,0 +1,73 @@
+import java.util.Random;
+import java.util.ArrayList;
+
+/**
+ * Tests the HeapSort class using the CorrectnessTester class and creates an environment that allows
+ * for time complexity testing over a range of ArrayList sizes.
+ * 
+ * @author Keenan Sanford
+ * @version 1/25/2015
+ */
+public class HeapTesterMain {
+	
+	// Instance variables
+	static int LOWER_RANGE = 750000;											// The lowest value of n.
+	static int UPPER_RANGE = 7500000;											// The highest value of n.
+	static int INCREMENTER = 750000;											// The step-size of n.
+	static int NUM_SIMS = 10;													// Number of times the sorter is run for each ArrayList size n
+																				// (in order to obtain an average time).
+	static int ELEMENT_SIZE = 100;												// The largest element value allowed in the ArrayList.
+
+	static HeapSort sorter = new HeapSort();									// Sorter class instantiation.
+	
+	public static void main(String[] args) {
+		
+		ArrayList<Integer> avgTimes = new ArrayList<Integer>(); 				// Holds the averages for each run of HeapSort.
+		ArrayList<Comparable> emptyArray = new ArrayList<Comparable>();			// Empty array for CorrectnessTester
+		
+		// Constructs and sorts an ArrayList for CorrectnessTester
+		Random generator = new Random();
+		ArrayList<Comparable> randomArray = new ArrayList<Comparable>();
+		for ( int i = 0; i < LOWER_RANGE; i++ ) {
+			int randomNumb = generator.nextInt(ELEMENT_SIZE);
+			randomArray.add(randomNumb);
+		}
+		
+		emptyArray = sorter.heapSort(emptyArray);
+		randomArray = sorter.heapSort(randomArray);
+		
+		// Tests the InsertionSort class for correctness.
+		CorrectnessTester tester = new CorrectnessTester();
+		if ( tester.zeroElementArraySort(emptyArray) && tester.correctlySorted(randomArray) ) {
+			System.out.println("Heap sort has passed all tests.");
+		}
+		
+		// Runs the InsertionSort class on list sizes from LOWER_RANGE to UPPER_RANGE in increments of INCREMENTER.
+		for (int i = LOWER_RANGE; i < UPPER_RANGE; i += INCREMENTER ){
+			// Tests the InsertionSort class for sort time by running the sort NUM_SIMS times and averaging them together.
+			ArrayList<Integer> sortTimes = new ArrayList<Integer>();
+			for ( int j = 0; j < NUM_SIMS; j++) {
+				Integer sortTime = sorter.sortTime(i);
+				sortTimes.add(sortTime);
+			}
+			
+			// Averages the integers in sortTime.
+			int sum = 0;
+			int avg;
+			int worstCaseRunTime = sortTimes.get(0);							// The worst-case run time for this sort.
+			for ( int j = 0; j < NUM_SIMS; j++ ) {
+				sum += sortTimes.get(j);
+				if ( worstCaseRunTime < sortTimes.get(j) ) {
+					worstCaseRunTime = sortTimes.get(j);
+				}
+			}
+			
+			avg = sum/NUM_SIMS;
+			avgTimes.add(avg);
+			System.out.println ("Average-case run time for " + i + ": " + avg);
+			System.out.println("Worst-case run time for " + i + ": " + worstCaseRunTime);
+		}
+		
+	}
+	
+}
