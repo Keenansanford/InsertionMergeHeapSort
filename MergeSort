@@ -1,0 +1,136 @@
+import java.util.ArrayList;
+import java.util.Random;
+
+/**
+ * The class that actually does the sorting. Divides the unsorted list into smaller and smaller fractions until there is only
+ * one element in each sublist. Then the sublists are sorted into one list sublist until the entire list has been sort-merged.
+ * 
+ * @author Keenan Sanford
+ * @version 1/25/2015
+ */
+public class MergeSort {
+	
+	/**
+	 * Constructor.
+	 */
+	public MergeSort() {
+	}
+	
+	/**
+	 * @author Keenan Sanford
+	 * @version 1/25/2015
+	 * 
+	 * Purpose: The method that sorts the list.
+	 * 
+	 * Precondition: A non-zero sized ArrayList of Comparable elements in no specific order.
+	 * 
+	 * Postcondition: The same ArrayList of Comparable elements A[a_1, a_2, ..., a_n] such that a_1 <= a_2 <= ... <= a_n.
+	 * 
+	 * Invariant: 
+	 * 
+	 * @param unsortedArray - the array in need of sorting.
+	 * @param beginIndex - should always be 0. Only exists to allow for recursive behavior.
+	 * @param endIndex - should always be unsortedArray.size() - 1. Only exists to allow for recursive behavior.
+	 */
+	public ArrayList<Comparable> sort(ArrayList<Comparable> unsortedArray, int beginIndex, int endIndex) {
+		// Ensures that it is not trying to sort an empty array and returns null if it is.
+		if ( unsortedArray.size() == 0 ) {
+			return null;
+		}
+		
+		int midIndex = (endIndex + beginIndex)/2;								// Gets the index in the middle so the list can be split.
+		
+		// Recursively breaks the list into smaller and smaller indices until only one number exists in the returned array.
+		if ( beginIndex < endIndex ) {
+			unsortedArray = sort(unsortedArray, beginIndex, midIndex);
+			unsortedArray = sort(unsortedArray, midIndex + 1, endIndex);
+			unsortedArray = merge(unsortedArray, beginIndex, midIndex, endIndex);
+		}
+		
+		// The array should now be properly sorted.
+		return unsortedArray;
+	}
+	
+	/**
+	 * @author Keenan Sanford
+	 * @version 2/15/2015
+	 * 
+	 * Purpose: Helper method - merges two previously sorted lists into one sorted list so that the sort method can sort properly.
+	 * 
+	 * Precondition: Two non-zero, sorted ArrayLists.
+	 * 
+	 * Postcondition: One sorted ArrayList.
+	 * 
+	 * @param sortedArray1 - one of the ArrayLists to be merged.
+	 * @param sortedArray2 - the other ArrayList to be merged.
+	 */
+	public ArrayList<Comparable> merge(ArrayList<Comparable> arrayToBeSorted, int beginIndex, int midIndex, int endIndex) {
+		// Holds the ArrayLists that are being merged.
+		ArrayList<Comparable> arrayToBeMerged1 = new ArrayList<Comparable>();
+		ArrayList<Comparable> arrayToBeMerged2 = new ArrayList<Comparable>();
+		
+		for ( int i = beginIndex; i <= midIndex; i++ ) {
+			arrayToBeMerged1.add(arrayToBeSorted.get(i));
+		}
+		
+		for ( int j = midIndex + 1; j <= endIndex; j++ ) {
+			arrayToBeMerged2.add(arrayToBeSorted.get(j));
+		}
+		
+		arrayToBeMerged1.add(MergeTesterMain.ELEMENT_SIZE++);
+		arrayToBeMerged2.add(MergeTesterMain.ELEMENT_SIZE++);
+		
+		// The counters that allow this method to step through each arrayToBeMerged list and add the lesser of the two to sortedArray.
+		int i = 0;
+		int j = 0;
+		
+		// While either of the counters are less than the sizes of either arrayToBeMerged, compare the current values in
+		// each list to each other and add the smaller element into the sortedArray.
+		for ( int k = beginIndex; k <= endIndex; k++ ) {
+			
+			if ( (Integer)arrayToBeMerged1.get(i) <= (Integer)arrayToBeMerged2.get(j) ) {
+				arrayToBeSorted.set(k, arrayToBeMerged1.get(i));
+				i++;
+			}
+			
+			else {
+				arrayToBeSorted.set(k, arrayToBeMerged2.get(j));
+				j++;
+			}
+			
+		}
+		
+		return arrayToBeSorted;
+	}
+	
+	/**
+	 * Runs the sort and records the amount of time it took.
+	 * 
+	 * @param size
+	 * @return The amount of time it took to sort a list the size of size (parameter).
+	 */
+	public int sortTime( int size ) {
+		// Fills an ArrayList with SIZE randomly created integers.
+		Random generator = new Random();
+		ArrayList<Comparable> randomArray = new ArrayList<Comparable>();
+		for ( int i = 0; i < size; i++ ) {
+			int randomNumb = generator.nextInt(MergeTesterMain.ELEMENT_SIZE);
+			randomArray.add(randomNumb);
+		}
+		
+		// Gets the time before the sort.
+		int beginTime = (int)System.currentTimeMillis();
+		
+		// Sorts randomArray.
+		this.sort(randomArray, 0, size - 1);
+		
+		// Gets the time after the sort.
+		int endTime = (int)System.currentTimeMillis();
+		
+		// Calculates the time it took to sort randomArray.
+		int sortTime = endTime - beginTime;
+		
+		return sortTime;
+	}
+	
+}
