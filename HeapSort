@@ -1,0 +1,191 @@
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Stack;
+
+/**
+ * 
+ * 
+ * @author Keenan Sanford
+ * @version 2/22/2015
+ */
+public class HeapSort{
+	
+	/**
+	 * Constructor
+	 */
+	public HeapSort() {
+	}
+
+	/**
+	 * Helper method, accesses parent element.
+	 * 
+	 * @param i - The index value of this heap element.
+	 * @return The root of this heap element.
+	 */
+	public int parent( int i ) {
+		return (i-1)/2;
+	}
+	
+	/**
+	 * Helper method, accesses left child element.
+	 * 
+	 * @param i - The index value of this heap element.
+	 * @return The root of this heap element.
+	 */
+	public int left( int i ) {
+		return 2*i+1;
+	}
+	
+	/**
+	 * Helper method, accesses right child element.
+	 * 
+	 * @param i - The index value of this heap element.
+	 * @return The root of this heap element.
+	 */
+	public int right( int i ) {
+		return 2*i+2;
+	}
+	
+	/**
+	 * @author Keenan Sanford
+	 * @version 2/22/2015
+	 * Purpose: To turn a heap structure into a completely sorted ArrayList.
+	 * 
+	 * Pre-condition: A non-zero sized ArrayList of Comparable elements.
+	 * 
+	 * Post-condition: A heap sorted ArrayList such that a_n > a_2*n and a_n > a_2*n+1
+	 * 
+	 * @param heapArray - An ArrayList in any order.
+	 * @return 
+	 */
+	public ArrayList<Comparable> heapSort( ArrayList<Comparable> heapArray ) {
+		// Ensures the heapArray is not empty and returns null if it is.
+		if ( heapArray.size() == 0 ) {
+			return null;
+		}
+		
+		// Sorted ArrayList of heap elements.
+		Stack<Comparable> reverseSortedElements = new Stack<Comparable>();
+		ArrayList<Comparable> sortedArray = new ArrayList<Comparable>();
+		
+		// Constructs the initial heap to be "heapified".
+		buildMaxHeap(heapArray);
+		
+		// Reverse sorts (largest to smallest) the 0th element in the heap (a.k.a the largest element) 
+		// into a stack so that it can be forward sorted into an ArrayList.
+		for ( int i = heapArray.size()-1; i >= 0; i--) {
+			Comparable temp = heapArray.get(0);
+			heapArray.set(0, heapArray.get(i));
+			heapArray.remove(i);
+			sortedArray.add(temp);
+			maxHeapify(heapArray, 0);
+		}
+		
+//		while ( !(reverseSortedElements.isEmpty()) ) {
+//			sortedArray.add(reverseSortedElements.pop());
+//		}
+		return sortedArray;
+	}
+	
+	/**
+	 * @author Keenan Sanford
+	 * @version 2/22/2015
+	 * 
+	 * Purpose: To turn an ArrayList into a heap structure.
+	 * 
+	 * Pre-condition: A non-zero sized ArrayList of Comparable elements.
+	 * 
+	 * Post-condition: A heap sorted ArrayList such that a_n > a_2*n and a_n > a_2*n+1
+	 * 
+	 * @param heapArray - An ArrayList in any order.
+	 */
+	public void buildMaxHeap( ArrayList<Comparable> heapArray ) {
+		// Ensures the heapArray is not empty and returns null if it is.
+		if ( heapArray.size() == 0 ) {
+			return;
+		}
+		
+		// maxHeapify's the ArrayList.
+		for ( int i = (heapArray.size()-1)/2; i >= 0; i-- ) {
+			maxHeapify(heapArray, i);
+		}
+	}
+	
+	/**
+	 * @author Keenan Sanford
+	 * @version 2/2/2015
+	 * 
+	 * Purpose: The method that sorts the list.
+	 * 
+	 * Pre-condition: A non-zero sized ArrayList of Comparable elements in no specific order.
+	 * 
+	 * Post-Condition: A heap sorted ArrayList such that a_n > a_2*n and a_n > a_2*n+1
+	 * 
+	 * Invariant: 
+	 * 
+	 * @param heapArray - An ArrayList in any order.
+	 * @param index - The position in the heap that is being evaluated for correctness.
+	 */
+	public void maxHeapify( ArrayList<Comparable> heapArray, int index ) {
+		for ( int i = 0; i < heapArray.size(); i++ ) {
+		}
+		
+		// Ensures the heapArray is not empty and returns null if it is.
+		if ( heapArray.size() == 0 ) {
+			return;
+		}
+		
+		// Holds the left and right children.
+		int l = left(index);
+		int r = right(index);
+		
+		// Compares the element size of the children to that of the parent and swaps the
+		// parent and the child if a new largest is found.
+		int largest = index;
+		if ( l < heapArray.size() && (Integer)heapArray.get(l) > (Integer)heapArray.get(index) ) {
+			largest = l;
+		}
+		
+		if ( r < heapArray.size() && (Integer)heapArray.get(r) > (Integer)heapArray.get(largest) ) {
+			largest = r;
+		}
+		
+		if ( largest != index ) {
+			Comparable temp = heapArray.get(largest);
+			heapArray.set(largest, heapArray.get(index));
+			heapArray.set(index, temp);
+			maxHeapify(heapArray, largest);
+		}
+	}
+	
+	/**
+	 * Runs the sort and records the amount of time it took.
+	 * 
+	 * @param size
+	 * @return The amount of time it took to sort a list the size of size (parameter).
+	 */
+	public int sortTime( int size ) {
+		// Fills an ArrayList with SIZE randomly created integers.
+		Random generator = new Random();
+		ArrayList<Comparable> randomArray = new ArrayList<Comparable>();
+		for ( int i = 0; i < size; i++ ) {
+			int randomNumb = generator.nextInt(HeapTesterMain.ELEMENT_SIZE);
+			randomArray.add(randomNumb);
+		}
+		
+		// Gets the time before the sort.
+		int beginTime = (int)System.currentTimeMillis();
+		
+		// Sorts randomArray.
+		this.heapSort(randomArray);
+		
+		// Gets the time after the sort.
+		int endTime = (int)System.currentTimeMillis();
+		
+		// Calculates the time it took to sort randomArray.
+		int sortTime = endTime - beginTime;
+		
+		return sortTime;
+	}
+	
+}
