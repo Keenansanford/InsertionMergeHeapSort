@@ -1,11 +1,11 @@
 InsertionMergeHeapSort Summary:
 
-A sorting exercise using insertion, merge, and heap sorting functions to compare sort times. The classes are set up to analyze big O performance.
+A Java sorting exercise using insertion, merge, and heap sorting functions to compare sort times. The classes are set up to analyze big O performance.
 
-This assignment was mediated by the professor of the class (Dr. Gerry Howser) who aided with the coding at varying points. 
+This assignment was mediated by the professor of the class (Dr. Gerry Howser) who aided with the coding at varying points, and it was written using Eclipse.
 
 
-The classes are described in detail below
+The classes are described in detail below.
 
 CorrectnessTest: an algorithm that checks to make sure a list is sorted, numerically speaking.
 
